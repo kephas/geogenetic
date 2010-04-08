@@ -9,6 +9,7 @@
                   (rec (rest remaining-criteria))
                   #f)))))
   (let make-fronts ((unscored-individuals population)
+                    (remaining-population population)
                     (inidividuals-for-next-fronts '())
                     (current-front '())
                     (previous-fronts '()))
@@ -17,19 +18,25 @@
             (if (null? current-front) ; should only be true when entire population is empty...
                 previous-fronts
                 (cons current-front previous-fronts))
-            (make-fronts inidividuals-for-next-fronts '() '() (cons current-front previous-fronts)))
+            (make-fronts inidividuals-for-next-fronts
+                         inidividuals-for-next-fronts
+                         '()
+                         '()
+                         (cons current-front previous-fronts)))
         (let ((current-individual (first unscored-individuals)))
-          (if (let in-pareto-front? ((individuals population))
+          (if (let in-pareto-front? ((individuals remaining-population))
                 (if (null? individuals)
                     #t
                     (if (better-on-all-criteria? (first individuals) current-individual)
                         #f
                         (in-pareto-front? (rest individuals)))))
               (make-fronts (rest unscored-individuals)
+                           remaining-population
                            inidividuals-for-next-fronts
                            (cons current-individual current-front)
                            previous-fronts)
               (make-fronts (rest unscored-individuals)
+                           remaining-population
                            (cons current-individual inidividuals-for-next-fronts)
                            current-front
                            previous-fronts))))))
