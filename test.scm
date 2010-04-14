@@ -7,6 +7,8 @@
   (let loop ((index 2))
     (cons (make-criterion index) (if (= 0 index) '() (loop (- index 1))))))
 
-(define triples '((1 2 3)(2 1 3)(4 5 6)(5 4 7)(9 8 9)(8 9 9)))
+(define triples '((8 9 9)(1 2 3)(9 8 9)(4 5 6)(2 1 3)(5 4 7)))
 
-(display (pareto-fronts triples (make-criteria >)))
+(display (equal?
+          (map (make-pareto-score (pareto-fronts triples (make-criteria >)) 1) triples)
+          '(3 1 3 2 1 2)))

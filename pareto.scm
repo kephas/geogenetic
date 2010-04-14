@@ -40,3 +40,19 @@
                            (cons current-individual inidividuals-for-next-fronts)
                            current-front
                            previous-fronts))))))
+
+; pretty slick: two nested mutually recursive local functions...
+(define (make-pareto-score fronts starting-score)
+  (let ((scores (let score-fronts ((fronts fronts)
+                                   (current-score starting-score)
+                                   (scores '()))
+                  (if (null? fronts)
+                      scores
+                      (let score-individuals ((individuals (first fronts))
+                                              (scores scores))
+                        (if (null? individuals)
+                            (score-fronts (rest fronts) (add1 current-score) scores)
+                            (score-individuals (rest individuals)
+                                               (cons (cons (first individuals) current-score) scores))))))))
+    (lambda (individual)
+      (cdr (assq individual scores)))))
