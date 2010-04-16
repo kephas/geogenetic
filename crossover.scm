@@ -1,6 +1,6 @@
 (define (make-1p-crossover-operator)
   (lambda (ind1 ind2)
-    (let ((len (length ind1))
+    (let* ((len (length ind1))
           (crossover-point (random (add1 len))))
       (define (cross-individuals bits1 bits2 pos acc)
         (if (zero? pos)
