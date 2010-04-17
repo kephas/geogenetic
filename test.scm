@@ -2,8 +2,9 @@
   (display name)
   (display ": ")
   (display (if (boolean? value)
-               (if value "GOOD\n" "BAD\n")
-               value)))
+               (if value "GOOD" "BAD")
+               value))
+  (display "\n"))
 
 
 (load "pareto.scm")
@@ -37,3 +38,10 @@
 
 (test "1p-crossover"
       ((make-1p-crossover-operator) alice bob))
+
+(load "mutation.scm")
+
+(define carol (int-range 1 20))
+
+(test "mutation"
+      ((make-probabilistic-mutation-operator 25 (lambda (n) (+ n 100))) carol))
