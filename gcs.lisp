@@ -11,6 +11,8 @@
      (gethash key (slot-value object ',slot))))
 
 (define-hash-table-reader geometrical-constraints-system get-entity entities)
+(define-hash-table-reader geometrical-constraints-system get-predicate-criterion predicate-criteria)
+(define-hash-table-reader geometrical-constraints-system get-predicate-signature predicate-signatures)
 
 
 (defmethod has-entity-p ((system geometrical-constraints-system) entity)
