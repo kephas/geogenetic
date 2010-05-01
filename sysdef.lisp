@@ -15,3 +15,10 @@
       (unless (eq type (entity-type (get-entity system entity)))
 	(error 'gcs-type-error))
       (add-entity system entity type nil)))
+
+(defun ensure-constraints-entities (system specifications)
+  (dolist (specification specifications)
+    (map nil (lambda (entity type)
+	       (ensure-entity system entity type))
+	 (rest specification)
+	 (get-predicate-signature system (first specification)))))
