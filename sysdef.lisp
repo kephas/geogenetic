@@ -10,3 +10,8 @@
 		  (loop-entities (rest entities)))
 		(loop-specs (rest specifications))))))))
 
+(defun ensure-entity (system entity type)
+  (if (has-entity-p system entity)
+      (unless (eq type (entity-type (get-entity system entity)))
+	(error 'gcs-type-error))
+      (add-entity system entity type nil)))
