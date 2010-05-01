@@ -22,3 +22,8 @@
 	       (ensure-entity system entity type))
 	 (rest specification)
 	 (get-predicate-signature system (first specification)))))
+
+(defun make-criteria (system specifications)
+  (mapcar (lambda (specification)
+	    (funcall (get-predicate-criterion system (first specification)) (rest specification)))
+	  specifications))
