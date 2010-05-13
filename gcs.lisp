@@ -31,7 +31,7 @@
 
 
 (defmethod has-entity-p ((system geometrical-constraints-system) entity)
-  (gethash entity (slot-value system 'entities))
+  (gethash entity (slot-value system 'entities)))
 
 (defmethod add-entity ((system geometrical-constraints-system) entity type unknown)
   (let ((obj (make-instance 'geometrical-entity :type type)))
