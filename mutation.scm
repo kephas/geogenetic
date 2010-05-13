@@ -1,7 +1,0 @@
-(define (make-probabilistic-mutation-operator probability flip)
-  (lambda (individual)
-    (map (lambda (bit)
-           (if (< (random 100) probability)
-               (flip bit)
-               bit))
-         individual)))
