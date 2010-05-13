@@ -5,7 +5,7 @@
       (labels ((cross-individuals (bits1 bits2 pos acc)
 		 (if (zerop pos)
 		     (reverse acc)
-		     (cross-individuals (rest bits1) (rest bits2) (sub1 pos)
+		     (cross-individuals (rest bits1) (rest bits2) (1- pos)
 					(cons (if (<= pos crossover-point) (first bits1) (first bits2)) acc)))))
 	(list (cross-individuals ind1 ind2 length '())
 	      (cross-individuals ind2 ind1 length '()))))))
