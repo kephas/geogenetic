@@ -9,3 +9,12 @@
 (defmacro named-let (name binds &body body)
   `(labels ((,name ,(mapcar #'first binds) ,@body))
      (,name ,@(mapcar #'second binds))))
+
+
+(defmacro define-hash-table-reader (class name slot)
+  `(defmethod ,name ((object ,class) key)
+     (gethash key (slot-value object ',slot))))
+
+(defmacro define-hash-table-writer (class name slot)
+  `(defmethod ,name ((object ,class) key value)
+     (setf (gethash key (slot-value object ',slot)) value)))
