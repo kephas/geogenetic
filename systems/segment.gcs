@@ -1,0 +1,3 @@
+(gcs
+ :constraints ((distpp d p1 p2))
+ :parameters (d))

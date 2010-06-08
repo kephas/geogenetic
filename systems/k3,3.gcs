@@ -1,0 +1,15 @@
+(gcs
+ :constraints ((distpp d-out-1 p1 p2)
+	       (distpp d-out-2 p2 p3)
+	       (distpp d-out-3 p3 p4)
+	       (distpp d-out-4 p4 p5)
+	       (distpp d-out-5 p5 p6)
+	       (distpp d-out-6 p6 p1)
+	       (distpp d-in-1 p1 p4)
+	       (distpp d-in-2 p2 p5)
+	       (distpp d-in-3 p3 p6)
+	       (distpp d-in-4 p4 p1)
+	       (distpp d-in-5 p5 p2)
+	       (distpp d-in-6 p6 p3))
+ :parameters (d-out-1 d-out-2 d-out-3 d-out-4 d-out-5 d-out-6
+		      d-in-1 d-in-2 d-in-3 d-in-4 d-in-5 d-in-6))
