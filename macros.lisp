@@ -1,3 +1,5 @@
+(in-package :thierry-technologies.com/2010/06/gene-gcs)
+
 (defmacro with-functions (names &body body)
   `(labels (,@(mapcar (lambda (name-spec)
                         (if (consp name-spec)

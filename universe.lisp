@@ -1,3 +1,5 @@
+(in-package :thierry-technologies.com/2010/06/gene-gcs)
+
 (defclass geometrical-universe ()
   ((predicate-criteria :initform (make-hash-table))
    (predicate-signatures :initform (make-hash-table))))

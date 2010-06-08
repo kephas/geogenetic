@@ -1,3 +1,5 @@
+(in-package :thierry-technologies.com/2010/06/gene-gcs)
+
 (defclass geometrical-constraints-system ()
   ((universe :initarg :universe :reader gcs-universe)
    (entities :initform (make-hash-table))

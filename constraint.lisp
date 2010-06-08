@@ -1,3 +1,5 @@
+(in-package :thierry-technologies.com/2010/06/gene-gcs)
+
 (defmacro defconstraint (universe name args predicate sys-var &body body)
   `(progn
      (store-predicate-signature ,universe ,name ',(mapcar #'second args))

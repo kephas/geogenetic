@@ -1,3 +1,5 @@
+(in-package :thierry-technologies.com/2010/06/gene-gcs)
+
 (defun average (numbers)
   (if (null numbers)
       0

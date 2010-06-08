@@ -1,3 +1,5 @@
+(in-package :thierry-technologies.com/2010/06/gene-gcs)
+
 (defun add-entities-from-specifications (system specifications unknown)
   (named-let loop-specs ((specifications specifications))
     (if specifications

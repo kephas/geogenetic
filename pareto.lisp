@@ -1,3 +1,5 @@
+(in-package :thierry-technologies.com/2010/06/gene-gcs)
+
 (defun pareto-fronts (population criteria)
   (labels ((better-on-all-criteria? (comparee compared-to)
 	     (if (eq comparee compared-to)
