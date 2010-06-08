@@ -1,7 +1,7 @@
-(defmacro defconstraint (sys name args predicate sys-var &body body)
+(defmacro defconstraint (universe name args predicate sys-var &body body)
   `(progn
-     (store-predicate-signature ,sys ,name ',(mapcar #'second args))
-     (store-predicate-criteria ,sys ,name
+     (store-predicate-signature ,universe ,name ',(mapcar #'second args))
+     (store-predicate-criteria ,universe ,name
 			       (lambda (entities)
 				 (destructuring-bind ,(mapcar #'first args) entities
 				   (lambda (sys1 sys2)
