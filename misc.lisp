@@ -1,7 +1,10 @@
 (in-package :thierry-technologies.com/2010/06/gene-gcs)
 
 (defun error-margin (val1 val2)
-  (abs (- val1 val2)))
+  "Calculates the difference between two values"
+  (let ((val1 (entity-value val1))
+	(val2 (entity-value val2)))
+    (abs (- val1 val2))))
 
 (defun distance-between (point1 point2)
   (sqrt (reduce #'+ (mapcar (lambda (coord1 coord2)
