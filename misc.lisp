@@ -23,3 +23,8 @@
 
 (defun lines-angle (line1 line2)
   (vectors-angle (line-vector line1) (line-vector line2)))
+
+(defun 2points->vector (point1 point2)
+  (make-instance 'geometrical-entity-with-coordinates
+		 :type 'vector
+		 :coordinates (mapcar #'- (entity-coordinates point2) (entity-coordinates point1))))

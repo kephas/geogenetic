@@ -1,0 +1,5 @@
+(gcs
+ (constraints (angleppp a p1 p2 p3)
+	      (distpp d1 p1 p2)
+	      (distpp d2 p2 p3))
+ (parameters a d1 d2))
