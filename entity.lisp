@@ -1,7 +1,7 @@
 (in-package :thierry-technologies.com/2010/06/gene-gcs)
 
 (defclass geometrical-entity ()
-  ((type :initarg :type)))
+  ((type :initarg :type :reader entity-type)))
 
-(defmethod entity-type ((entity geometrical-entity))
-  (slot-value entity 'type))
+(defclass geometrical-entity-with-coordinates (geometrical-entity)
+  ((coordinates :initarg :coordinates :reader entity-coordinates)))
