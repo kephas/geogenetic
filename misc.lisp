@@ -17,3 +17,6 @@
 
 (defun vectors-angle (vector1 vector2)
   (/ (scalar-product vector1 vector2) (* (magnitude vector1) (magnitude vector2))))
+
+(defun lines-angle (line1 line2)
+  (vectors-angle (line-vector line1) (line-vector line2)))
