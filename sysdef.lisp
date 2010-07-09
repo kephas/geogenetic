@@ -47,27 +47,31 @@ they are used.
 |#
 
 (defun add-entities-from-specifications (system specifications unknown)
+  "Adds the entities from the parameter or unknown SPECIFICATIONS."
   (named-let loop-specs ((specifications specifications))
     (if specifications
-	(let* ((specification (first specifications))
-	       (type (canonical-type-name system (first specification))))
-	  (named-let loop-entities ((entities (rest specification)))
-	    (if entities
-		(progn
-		  (add-entity system (first entities) type unknown)
-		  (loop-entities (rest entities)))
-		(loop-specs (rest specifications))))))))
+	(let ((specification (first specifications)))
+	  (if (listp specification)
+	      (let ((type (canonical-type-name system (first specification))))
+		(named-let loop-entities ((entities (rest specification)))
+		  (if entities
+		      (progn
+			(add-entity system (first entities) type unknown)
+			(loop-entities (rest entities))))))
+	      (add-entity system specification nil unknown))
+	  (loop-specs (rest specifications))))))
 
-(defun ensure-entity (system entity type)
+(defun ensure-entity (system entity type unknown)
   (if (has-entity-p system entity)
-      (unless (eq type (entity-type (get-entity system entity)))
+      (unless (let ((stored-type (entity-type (get-entity system entity))))
+		(or (not stored-type) (eq type stored-type)))
 	(error 'gcs-type-error))
-      (add-entity system entity type nil)))
+      (add-entity system entity type unknown)))
 
 (defun ensure-constraints-entities (system specifications)
   (dolist (specification specifications)
     (map nil (lambda (entity type)
-	       (ensure-entity system entity type))
+	       (ensure-entity system entity type nil))
 	 (rest specification)
 	 (get-predicate-signature system (first specification)))))
 
