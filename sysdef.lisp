@@ -73,15 +73,15 @@ they are used.
     (map nil (lambda (entity type)
 	       (ensure-entity system entity type nil))
 	 (rest specification)
-	 (get-predicate-signature system (first specification)))))
+	 (get-predicate-signature (gcs-universe system) (first specification)))))
 
-(defun make-criteria (system specifications)
+(defun make-criteria (universe specifications)
   "Returns the list of functions that will evaluate the fitness of
 a solution, with respect to each constraint.
 
 SPECIFICATIONS is the constraints part of the system definition."
   (mapcar (lambda (specification)
-	    (funcall (get-predicate-criterion system (first specification)) (rest specification)))
+	    (funcall (get-predicate-criterion universe (first specification)) (rest specification)))
 	  specifications))
 
 (defun read-gcs (form universe)
@@ -93,4 +93,4 @@ SPECIFICATIONS is the constraints part of the system definition."
     (add-entities-from-specifications system unknowns t)
     (add-entities-from-specifications system parameters nil)
     (ensure-constraints-entities system constraints)
-    (make-criteria system constraints)))
+    (values system (make-criteria (gcs-universe system) constraints))))
