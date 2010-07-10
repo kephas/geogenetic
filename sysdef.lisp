@@ -103,10 +103,25 @@ SPECIFICATIONS is the constraints part of the system definition."
     (ensure-constraints-entities system constraints)
     (values system (make-criteria (gcs-universe system) constraints))))
 
-(defun read-bared-values (form)
+(defun read-bared-values (form universe)
   (make-instance 'sequential-valuation :values (rest form)))
 
-(defun read-named-values (form)
+(defun read-named-values (form universe)
   (let ((valuation (make-instance 'named-valuation)))
     (dolist (named-value (rest form) valuation)
       (store-named-value valuation (first named-value) (second named-value)))))
+
+(defvar *reader-associations*
+  `((gcs ,#'read-gcs)
+    (bare-values ,#'read-bared-values)
+    (named-values ,#'read-named-values)))
+
+(defun read-definitions-files (pathname universe)
+  (let ((*package* (find-package :thierry-technologies.com/2010/06/gene-gcs)))
+    (with-open-file (in pathname)
+      (named-let rec ((form (read in nil))
+		       (acc))
+	(if form
+	    (let ((reader-function (second (assoc (first form) *reader-associations*))))
+	      (rec (read in nil) (cons (funcall reader-function form universe) acc)))
+	    (reverse acc))))))
