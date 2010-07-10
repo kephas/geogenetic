@@ -102,3 +102,11 @@ SPECIFICATIONS is the constraints part of the system definition."
     (add-entities-from-specifications system parameters nil)
     (ensure-constraints-entities system constraints)
     (values system (make-criteria (gcs-universe system) constraints))))
+
+(defun read-bared-values (form)
+  (make-instance 'sequential-valuation :values (rest form)))
+
+(defun read-named-values (form)
+  (let ((valuation (make-instance 'named-valuation)))
+    (dolist (named-value (rest form) valuation)
+      (store-named-value valuation (first named-value) (second named-value)))))
