@@ -4,7 +4,8 @@
   ((universe :initarg :universe :reader gcs-universe)
    (entities :initform (make-hash-table))
    (unknowns :initform (make-hash-table))
-   (parameters :initform (make-hash-table))))
+   (parameters :initform (make-hash-table))
+   (parameters-sequence :initarg :params :reader gcs-param-sequence)))
 
 (define-hash-table-reader geometrical-constraints-system get-entity entities)
 (define-hash-table-writer geometrical-constraints-system store-entity entities)
@@ -35,3 +36,13 @@
 ; no alias system for now
 (defmethod canonical-type-name (system name)
   name)
+
+
+(defclass sequential-valuation ()
+  ((values :initarg :values :reader valuation-sequence)))
+
+(defclass named-valuation ()
+  ((values :initform (make-hash-table))))
+
+(define-hash-table-reader named-valuation get-named-value values)
+(define-hash-table-writer named-valuation store-named-value values)

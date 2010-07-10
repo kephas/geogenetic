@@ -32,8 +32,7 @@ there is a constraint (distcc x y z) and the signature of distcc is
 
 A valuation definition form is as follows:
 
-(values
- VALUE* | NAMED-VALUE*)
+(bare-values VALUE*) | (named-values NAMED-VALUE*)
 
 NAMED-VALUE = (ENTITY VALUE)
 
@@ -84,12 +83,21 @@ SPECIFICATIONS is the constraints part of the system definition."
 	    (funcall (get-predicate-criterion universe (first specification)) (rest specification)))
 	  specifications))
 
+(defun untype-parameters-specifications (specifications)
+  (mapcan (lambda (specification)
+	    (if (listp specification)
+		(rest specification)
+		(list specification)))
+	  specifications))
+
 (defun read-gcs (form universe)
   (let* ((options (rest form))
 	 (constraints (rest (assoc 'constraints options)))
 	 (parameters (rest (assoc 'parameters options)))
 	 (unknowns (rest (assoc 'unknowns options)))
-	 (system (make-instance 'geometrical-constraints-system :universe universe)))
+	 (system (make-instance 'geometrical-constraints-system
+				:universe universe
+				:params (untype-parameters-specifications parameters))))
     (add-entities-from-specifications system unknowns t)
     (add-entities-from-specifications system parameters nil)
     (ensure-constraints-entities system constraints)
