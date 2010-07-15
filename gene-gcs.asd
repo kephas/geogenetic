@@ -22,6 +22,7 @@
 	       (:file "select")
 	       (:file "crossover")
 	       (:file "mutation")
-	       (:file "evolve"))
+	       (:file "evolve")
+	       (:file "debug"))
 
   :serial t)
