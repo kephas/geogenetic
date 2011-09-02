@@ -28,3 +28,12 @@
   (make-instance 'geometrical-entity-with-coordinates
 		 :type 'vector
 		 :coordinates (mapcar #'- (entity-coordinates point2) (entity-coordinates point1))))
+
+
+(defun hash-keys (hash-table)
+  (let ((keys))
+    (maphash (lambda (key value)
+	       (declare (ignore value))
+	       (push key keys))
+	     hash-table)
+    keys))
