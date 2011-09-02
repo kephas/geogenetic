@@ -8,7 +8,7 @@
   :version "0.1.0"
   :author "Pierre Thierry <pierre.thierry@thierry-technologies.com>"
   :licence "GPL"
-  :depends-on ("cl-utilities")
+  :depends-on ("cl-utilities" "cl-clone")
   :components ((:file "package")
                (:file "macros")
 	       (:file "misc")
