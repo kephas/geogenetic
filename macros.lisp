@@ -12,6 +12,10 @@
   `(labels ((,name ,(mapcar #'first binds) ,@body))
      (,name ,@(mapcar #'second binds))))
 
+(defmacro cif (var form then &optional else)
+  `(let ((,var ,form))
+     (if ,var ,then ,else)))
+
 
 (defmacro define-hash-table-reader (class name slot)
   `(defmethod ,name ((object ,class) key)
