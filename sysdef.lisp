@@ -84,6 +84,8 @@ SPECIFICATIONS is the constraints part of the system definition."
 	  specifications))
 
 (defun untype-parameters-specifications (specifications)
+  "Returns the list of paramters' names, stripped from the type information
+if present in SPECIFICATIONS."
   (mapcan (lambda (specification)
 	    (if (listp specification)
 		(rest specification)
