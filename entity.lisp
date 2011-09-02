@@ -13,3 +13,27 @@
 ; its own value
 (defmethod entity-value (obj)
   obj)
+
+
+
+(defgeneric %entity-type-class (universe type)
+  (:documentation "Return the class that is able to represent TYPE"))
+
+(defun upgrade-entity-for-type (universe obj)
+  (change-class obj (%entity-type-class universe (entity-type obj))))
+
+
+(defgeneric fill-entity-with-value (obj value))
+
+(defun upgrade-with-value (universe entity value)
+  "Change ENTITY, in UNIVERSE, to what is described by VALUE."
+  (upgrade-entity-for-type universe entity)
+  (fill-entity-with-value entity value))
+
+
+
+(defmethod fill-entity-with-value ((obj geometrical-entity-with-coordinates) (value list))
+  (setf (slot-value obj 'coordinates) value))
+
+(defmethod fill-entity-with-value ((obj geometrical-entity-with-value) (value number))
+  (setf (slot-value obj 'value) value))
