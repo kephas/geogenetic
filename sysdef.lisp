@@ -106,9 +106,11 @@ if present in SPECIFICATIONS."
     (values system (make-criteria (gcs-universe system) constraints))))
 
 (defun read-bared-values (form universe)
+  (declare (ignore universe))
   (make-instance 'sequential-valuation :values (rest form)))
 
 (defun read-named-values (form universe)
+  (declare (ignore universe))
   (let ((valuation (make-instance 'named-valuation)))
     (dolist (named-value (rest form) valuation)
       (store-named-value valuation (first named-value) (second named-value)))))
