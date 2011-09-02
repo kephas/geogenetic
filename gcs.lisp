@@ -33,10 +33,6 @@
 	(store-unknown system entity obj)
 	(store-parameter system entity obj))))
 
-; no alias system for now
-(defmethod canonical-type-name (system name)
-  name)
-
 
 (defclass sequential-valuation ()
   ((values :initarg :values :reader valuation-sequence)))

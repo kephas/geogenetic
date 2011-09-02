@@ -51,7 +51,7 @@ they are used.
     (if specifications
 	(let ((specification (first specifications)))
 	  (if (listp specification)
-	      (let ((type (canonical-type-name system (first specification))))
+	      (let ((type (first specification)))
 		(named-let loop-entities ((entities (rest specification)))
 		  (if entities
 		      (progn
