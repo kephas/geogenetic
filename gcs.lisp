@@ -20,7 +20,7 @@
 (defmethod get-predicate-criterion ((gcs geometrical-constraints-system) predicate)
   (get-predicate-criterion (gcs-universe gcs) predicate))
 
-(defmethod predicate-signature ((gcs geometrical-constraints-system) predicate)
+(defmethod get-predicate-signature ((gcs geometrical-constraints-system) predicate)
   (get-predicate-signature (gcs-universe gcs) predicate))
 
 (defmethod has-entity-p ((system geometrical-constraints-system) entity)
