@@ -61,11 +61,12 @@ they are used.
 	  (loop-specs (rest specifications))))))
 
 (defun ensure-entity (system entity type unknown)
-  (if (has-entity-p system entity)
-      (unless (let ((stored-type (entity-type (get-entity system entity))))
-		(or (not stored-type) (eq type stored-type)))
-	(error 'gcs-type-error))
-      (add-entity system entity type unknown)))
+  (cif object (get-entity system entity)
+       (cif stored-type (entity-type (get-entity system entity))
+	    (unless (eq type stored-type)
+	      (error 'gcs-type-error))
+	    (setf (slot-value object 'type) type))
+       (add-entity system entity type unknown)))
 
 (defun ensure-constraints-entities (system specifications)
   (dolist (specification specifications)
@@ -126,8 +127,9 @@ if present in SPECIFICATIONS."
       (named-let rec ((form (read in nil))
 		       (acc))
 	(if form
-	    (let ((reader-function (cif fun (second (assoc (first form) *reader-associations*))
+	    (let* ((kind (first form))
+		   (reader-function (cif fun (second (assoc kind *reader-associations*))
 					fun
 					(constantly nil))))
-		    (rec (read in nil) (cons (funcall reader-function form universe) acc)))
+	      (rec (read in nil) (cons (cons kind (multiple-value-list (funcall reader-function form universe))) acc)))
 	    (reverse acc))))))
