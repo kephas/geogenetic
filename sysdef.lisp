@@ -122,6 +122,8 @@ SPECIFICATIONS is the constraints part of the system definition."
       (named-let rec ((form (read in nil))
 		       (acc))
 	(if form
-	    (let ((reader-function (second (assoc (first form) *reader-associations*))))
-	      (rec (read in nil) (cons (funcall reader-function form universe) acc)))
+	    (let ((reader-function (cif fun (second (assoc (first form) *reader-associations*))
+					fun
+					(constantly nil))))
+		    (rec (read in nil) (cons (funcall reader-function form universe) acc)))
 	    (reverse acc))))))
