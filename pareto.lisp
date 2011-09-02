@@ -43,17 +43,28 @@
 			     current-front
 			     previous-fronts)))))))
 
+
+(defun make-affine-score-source (start &optional (step 1))
+  "Return a function that returns START and then numbers in-/decreasing by STEP."
+  (let ((start (- start step)))
+    (lambda () (incf start step))))
+
+(defun make-deducting-score-source (items &key (end 0) (step 1))
+  "Return a function that returns numbers decreasing by STEP associated with each element of ITEMS
+such as the last is associated with END."
+  (make-affine-score-source (+ end (* step (length items))) (- step)))
+
 ; pretty slick: two nested mutually recursive local functions...
-(defun make-pareto-score (fronts starting-score)
+(defun make-pareto-score (fronts &optional (score-source (make-deducting-score-source fronts)))
   (let ((scores (named-let score-fronts ((fronts fronts)
-					 (current-score starting-score)
+					 (current-score (funcall score-source))
 					 (scores '()))
                   (if (null fronts)
                       scores
                       (named-let score-individuals ((individuals (first fronts))
 						    (scores scores))
 			(if (null individuals)
-                            (score-fronts (rest fronts) (1+ current-score) scores)
+                            (score-fronts (rest fronts) (funcall score-source) scores)
                             (score-individuals (rest individuals)
                                                (cons (cons (first individuals) current-score) scores))))))))
     (lambda (individual)
