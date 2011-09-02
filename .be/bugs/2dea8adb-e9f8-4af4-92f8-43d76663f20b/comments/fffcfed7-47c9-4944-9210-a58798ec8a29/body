@@ -1,0 +1,6 @@
+Currently, the geometrical universe needs to be given to the
+READ-DEFINITIONS-FILES function, but it should be possible to omit it
+and have it read from the configuration file. Reading a 'gcs' form
+before reading a 'universe' when there is none provided in the
+function call should then trigger an error (note that reading a
+valuation shouldn't, though).
