@@ -7,12 +7,11 @@ ARGS is a list of the form ((name1 type1) (name2 type2) ... (nameN typeN))"
     `(progn
        (store-predicate-signature ,universe ',name ',(mapcar #'second args))
        (store-predicate-criterion ,universe ',name
-				 (lambda (entities)
-				   (destructuring-bind ,(mapcar #'first args) entities
-				     (lambda (sys1 sys2)
-				       (macrolet ((system () ,sys-var))
-					 (labels ((entity (name)
-						    (get-entity ,sys-var name))
-						  (score (,sys-var)
-						    ,@body))
-					   (funcall ,predicate (score sys1) (score sys2)))))))))))
+				  (lambda (entities)
+				    (destructuring-bind ,(mapcar #'first args) entities
+				      (lambda (sys1 sys2)
+					(labels ((entity (name)
+						   (get-entity ,sys-var name))
+						 (score (,sys-var)
+						   ,@body))
+					  (funcall ,predicate (score sys1) (score sys2))))))))))
