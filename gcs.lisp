@@ -42,3 +42,13 @@
 
 (define-hash-table-reader named-valuation get-named-value values)
 (define-hash-table-writer named-valuation store-named-value values)
+
+
+(defun add-parameters-names (system valuation)
+  "Transform a sequantial valuation to a named one."
+  (let ((named-vals (make-instance 'named-valuation)))
+    (map nil (lambda (name value)
+	       (store-named-value named-vals name value))
+	 (gcs-param-sequence system)
+	 (valuation-sequence valuation))
+    named-vals))
