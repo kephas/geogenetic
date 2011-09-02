@@ -70,7 +70,7 @@ they are used.
 (defun ensure-constraints-entities (system specifications)
   (dolist (specification specifications)
     (map nil (lambda (entity type)
-	       (ensure-entity system entity type nil))
+	       (ensure-entity system entity type t))
 	 (rest specification)
 	 (get-predicate-signature (gcs-universe system) (first specification)))))
 
