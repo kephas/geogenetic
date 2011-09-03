@@ -3,7 +3,7 @@
 (defclass geometrical-universe ()
   ((predicate-criteria :initform (make-hash-table))
    (predicate-signatures :initform (make-hash-table))
-   (dimensions :initform nil)))
+   (dimensions :initform 0)))
 
 (define-hash-table-reader geometrical-universe get-predicate-criterion predicate-criteria)
 (define-hash-table-writer geometrical-universe store-predicate-criterion predicate-criteria)
