@@ -37,3 +37,13 @@
 
 (defmethod fill-entity-with-value ((obj geometrical-entity-with-value) (value number))
   (setf (slot-value obj 'value) value))
+
+
+(defmethod shared-clone :after ((object geometrical-entity) (clone geometrical-entity))
+  (setf (slot-value clone 'type) (entity-type object)))
+
+(defmethod shared-clone :after ((object geometrical-entity-with-coordinates) (clone geometrical-entity-with-coordinates))
+  (setf (slot-value clone 'coordinates) (entity-coordinates object)))
+
+(defmethod shared-clone :after ((object geometrical-entity-with-value) (clone geometrical-entity-with-value))
+  (setf (slot-value clone 'value) (entity-value object)))
