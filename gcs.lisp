@@ -17,6 +17,20 @@
 (define-hash-table-writer geometrical-constraints-system store-parameter parameters)
 
 
+(defmethod shared-clone :after ((object geometrical-constraints-system) (clone geometrical-constraints-system))
+  (setf (slot-value clone 'universe) (slot-value object 'universe)
+	(slot-value clone 'parameters-sequence) (slot-value object 'parameters-sequence))
+  (maphash (lambda (key value)
+	     (setf (gethash key (slot-value clone 'entities))
+		   (clone value)))
+	   (slot-value object 'entities))
+  (dolist (slot '(unknowns parameters))
+    (maphash (lambda (key value)
+	       (declare (ignore value))
+	       (setf (gethash key (slot-value clone slot)) (gethash key (slot-value clone 'entities))))
+	     (slot-value object slot))))
+
+
 (defmethod get-predicate-criterion ((gcs geometrical-constraints-system) predicate)
   (get-predicate-criterion (gcs-universe gcs) predicate))
 
@@ -44,6 +58,11 @@
 (define-hash-table-writer named-valuation store-named-value values)
 
 
+(defun apply-valuation (system slot valuation)
+  (maphash (lambda (name entity)
+	     (upgrade-with-value (gcs-universe system) entity (get-named-value valuation name)))
+	   (slot-value system slot)))
+
 (defun add-parameters-names (system valuation)
   "Transform a sequantial valuation to a named one."
   (let ((named-vals (make-instance 'named-valuation)))
@@ -52,3 +71,15 @@
 	 (gcs-param-sequence system)
 	 (valuation-sequence valuation))
     named-vals))
+
+
+(defgeneric valuated-system (system valuation)
+  (:documentation "Return a copy of the system where parameters are valuated"))
+
+(defmethod valuated-system (system (valuation sequential-valuation))
+  (valuated-system system (add-parameters-names system valuation)))
+
+(defmethod valuated-system (system (valuation named-valuation))
+  (let ((copy (clone system)))
+    (apply-valuation copy 'parameters valuation)
+    copy))
