@@ -90,3 +90,11 @@
 	(multiple-value-bind (value remaining-genotype)
 	    (extract-value size genotype)
 	  (rec remaining-genotype (1- counter) (cons value phenotype))))))
+
+
+(defun phenotype->genotype (size phenotype)
+  (named-let rec ((phenotype phenotype)
+		  (genotype 0))
+    (if phenotype
+	(rec (rest phenotype) (+ (first phenotype) (ash genotype size)))
+	genotype)))
