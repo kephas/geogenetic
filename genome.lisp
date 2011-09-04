@@ -2,10 +2,10 @@
 
 (defgeneric entity->phenotype (universe entity))
 
-(defmethod entity->phenotype ((universe (eql *euclidian*)) (entity geometrical-entity-with-value))
+(defmethod entity->phenotype ((universe euclidian-universe) (entity geometrical-entity-with-value))
   (list (entity-value entity)))
 
-(defmethod entity->phenotype ((universe (eql *euclidian*)) (entity geometrical-entity-with-coordinates))
+(defmethod entity->phenotype ((universe euclidian-universe) (entity geometrical-entity-with-coordinates))
   (clone (entity-coordinates entity)))
 
 (defun gcs->phenotype (system)
@@ -13,3 +13,9 @@
 	  (mapcar (lambda (name)
 		    (get-entity system name))
 		  (gcs-unknowns-sequence system))))
+
+
+(defun typed-names (system names)
+  (mapcar (lambda (name)
+	    (list (entity-type (get-entity system name)) name))
+	  names))
