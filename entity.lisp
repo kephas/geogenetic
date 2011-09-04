@@ -19,6 +19,9 @@
 (defgeneric %entity-type-class (universe type)
   (:documentation "Return the class that is able to represent TYPE"))
 
+(defun instantiate-type (universe type)
+  (make-instance (%entity-type-class universe type) :type type))
+
 (defun upgrade-entity-for-type (universe obj)
   (change-class obj (%entity-type-class universe (entity-type obj))))
 

@@ -18,23 +18,35 @@
 
 (defgeneric %phenotype->entity (universe entity phenotype))
 
+(defgeneric phenotype-size (universe entity))
+
 (defun phenotype->entity (universe type phenotype)
-  (%phenotype->entity universe (make-instance (%entity-type-class universe type) :type type) phenotype))
+  (let ((entity (make-instance (%entity-type-class universe type) :type type)))
+    (assert-phenotype-size (phenotype-size universe entity) phenotype)
+    (%phenotype->entity universe entity phenotype)))
 
 
 (defun assert-phenotype-size (size phenotype)
   (when (< (length phenotype) size)
     (error "Ran out of phenotype…")))
 
+(defmethod phenotype-size ((universe euclidian-universe) (entity symbol))
+  (phenotype-size universe (instantiate-type universe entity)))
+
+(defmethod phenotype-size ((universe euclidian-universe) (entity geometrical-entity-with-value))
+  1)
+
+(defmethod phenotype-size ((universe euclidian-universe) (entity geometrical-entity-with-coordinates))
+  (universe-dimensions universe))
+
+
 (defmethod %phenotype->entity ((universe euclidian-universe) (entity geometrical-entity-with-value) phenotype)
-  (assert-phenotype-size 1 phenotype)
   (let ((remaining (subseq phenotype 1)))
     (setf (slot-value entity 'value) (nth 0 phenotype))
     (values entity remaining)))
 
 (defmethod %phenotype->entity ((universe euclidian-universe) (entity geometrical-entity-with-coordinates) phenotype)
   (let ((dims (universe-dimensions universe)))
-    (assert-phenotype-size dims phenotype)
     (let ((remaining (subseq phenotype dims)))
       (setf (slot-value entity 'coordinates) (subseq phenotype 0 dims))
       (values entity remaining))))
@@ -61,3 +73,20 @@
 	      (warn "There's still a bit of phenotype left. Doggy bag? ~a" phenotype))
 	    (resync-from-entities system)
 	    system)))))
+
+
+
+(defun gcs-phenotype-length (system)
+  (reduce #'+ (mapcar (lambda (type)
+			(phenotype-size (gcs-universe system) type))
+		      (mapcar #'first (typed-names system (gcs-unknowns-sequence system))))))
+
+(defun genotype->phenotype (size system genotype)
+  (named-let rec ((genotype genotype)
+		  (counter (gcs-phenotype-length system))
+		  (phenotype nil))
+    (if (zerop counter)
+	phenotype
+	(multiple-value-bind (value remaining-genotype)
+	    (extract-value size genotype)
+	  (rec remaining-genotype (1- counter) (cons value phenotype))))))
