@@ -38,7 +38,11 @@
 	     (setf (gethash key (slot-value clone 'entities))
 		   (clone value)))
 	   (slot-value object 'entities))
-  (resync-from-entities clone))
+  (dolist (slot '(unknowns parameters))
+    (maphash (lambda (key value)
+	       (declare (ignore value))
+	       (setf (gethash key (slot-value clone slot)) (gethash key (slot-value clone 'entities))))
+	     (slot-value object slot))))
 
 
 (defmethod get-predicate-criterion ((gcs geometrical-constraints-system) predicate)
