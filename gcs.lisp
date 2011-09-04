@@ -21,6 +21,16 @@
   (sort (hash-keys (slot-value system 'unknowns)) #'string< :key #'symbol-name))
 
 
+(defun resync-from-entities (system)
+  "Redispatch entities to the UNKNOWNS and PARAMETERS hash tables, in
+  case they have been replaced in the ENTITIES hash table."
+  (dolist (slot '(unknowns parameters))
+    (maphash (lambda (key value)
+	       (declare (ignore value))
+	       (setf (gethash key (slot-value system slot)) (gethash key (slot-value system 'entities))))
+	     (slot-value system slot))))
+
+
 (defmethod shared-clone :after ((object geometrical-constraints-system) (clone geometrical-constraints-system))
   (setf (slot-value clone 'universe) (slot-value object 'universe)
 	(slot-value clone 'parameters-sequence) (slot-value object 'parameters-sequence))
@@ -28,11 +38,7 @@
 	     (setf (gethash key (slot-value clone 'entities))
 		   (clone value)))
 	   (slot-value object 'entities))
-  (dolist (slot '(unknowns parameters))
-    (maphash (lambda (key value)
-	       (declare (ignore value))
-	       (setf (gethash key (slot-value clone slot)) (gethash key (slot-value clone 'entities))))
-	     (slot-value object slot))))
+  (resync-from-entities clone))
 
 
 (defmethod get-predicate-criterion ((gcs geometrical-constraints-system) predicate)
