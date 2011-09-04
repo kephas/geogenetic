@@ -4,6 +4,6 @@
 (defvar %constraints)
 
 (defun read-test (file)
-  (let ((data (cdar (read-definitions-files file *euclidian*))))
+  (let ((data (cdar (read-definitions-files file *euclidian-base*))))
     (setf %sys (first data)
 	  %constraints (second data))))
