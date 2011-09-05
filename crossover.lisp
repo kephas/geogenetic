@@ -13,3 +13,13 @@
 		 (dpb (ldb bytespec genome1) bytespec child2)
 		 (dpb (ldb bytespec genome2) bytespec child1)))
 	  (values child1 child2))))))
+
+(defun make-npoints-source (genome-size count)
+  (lambda ()
+    (named-let rec ((ceiling (1+ genome-size))
+		    (counter count)
+		    (acc nil))
+      (if (zerop counter)
+	  (append (reverse acc) '(0))
+	  (let ((point (random ceiling)))
+	    (rec point (1- counter) (cons point acc)))))))
