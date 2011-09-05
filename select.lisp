@@ -29,3 +29,20 @@
             (if (<= pos adjusted-score)
                 (sample population (1- count) (+ pos interval) sum-of-previous-scores (cons (first population) sampling))
                 (sample (rest population) count pos adjusted-score sampling)))))))
+
+
+(defun make-random-partial-order (&optional (size 1.0))
+  (let ((ranks (make-hash-table)))
+    (lambda (x y)
+      (dolist (item (list x y))
+	(unless (gethash item ranks)
+	  (setf (gethash item ranks) (random size))))
+      (< (gethash x ranks) (gethash y ranks)))))
+
+
+(defun mate (population)
+  (named-let rec ((population population)
+		  (couples))
+    (if population
+	(rec (rest (rest population)) (cons (list (first population) (second population)) couples))
+	couples)))
