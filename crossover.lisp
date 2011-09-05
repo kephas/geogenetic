@@ -12,7 +12,7 @@
 	    (rec next (rest points)
 		 (dpb (ldb bytespec genome1) bytespec child2)
 		 (dpb (ldb bytespec genome2) bytespec child1)))
-	  (values child1 child2))))))
+	  (list child1 child2))))))
 
 (defun make-npoints-source (genome-size count)
   (lambda ()
