@@ -55,7 +55,7 @@ such as the last is associated with END."
   (make-affine-score-source (+ end (* step (length items))) (- step)))
 
 ; pretty slick: two nested mutually recursive local functions...
-(defun make-pareto-score (fronts &optional (score-source (make-deducting-score-source fronts)))
+(defun make-pareto-score (fronts &optional (score-source (make-affine-score-source 1)))
   (let ((scores (named-let score-fronts ((fronts fronts)
 					 (current-score (funcall score-source))
 					 (scores '()))
