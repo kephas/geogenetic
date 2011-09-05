@@ -15,7 +15,7 @@
 
 (defun stochastic-universal-sampling (population score precision)
   (let* ((count (length population))
-         (max (apply + (mapcar score population)))
+         (max (reduce #'+ (mapcar score population)))
          (interval (/ max count))
          (start (/ (* (random precision) interval) precision)))
     (named-let sample ((population population)
