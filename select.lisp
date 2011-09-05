@@ -13,7 +13,7 @@
 (defun average-score (population score)
   (average (mapcar score population)))
 
-(defun stochastic-universal-sampling (population score precision)
+(defun stochastic-universal-sampling (population score &optional (precision (length population)))
   (let* ((count (length population))
          (max (reduce #'+ (mapcar score population)))
          (interval (/ max count))
