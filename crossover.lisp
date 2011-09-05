@@ -23,3 +23,13 @@
 	  (append (reverse acc) '(0))
 	  (let ((point (random ceiling)))
 	    (rec point (1- counter) (cons point acc)))))))
+
+(defun make-probabilistic-point-source (genome-size probability)
+  (lambda ()
+    (named-let rec ((counter genome-size)
+		    (acc nil))
+      (if (zerop counter)
+	  (append (reverse acc) '(0))
+	  (if (< (random 1.0) probability)
+	      (rec (1- counter) (cons counter acc))
+	      (rec (1- counter) acc))))))
