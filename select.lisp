@@ -39,6 +39,9 @@
 	  (setf (gethash item ranks) (random size))))
       (< (gethash x ranks) (gethash y ranks)))))
 
+(defun shuffle (population)
+  (sort population (make-random-partial-order (length population)) :key (lambda (x) (list x))))
+
 
 (defun mate (population)
   (named-let rec ((population population)
@@ -46,3 +49,8 @@
     (if population
 	(rec (rest (rest population)) (cons (list (first population) (second population)) couples))
 	couples)))
+
+
+(defun make-stochastic-pareto-selection (criteria)
+  (lambda (population)
+    (mate (shuffle (stochastic-universal-sampling population (make-pareto-score (pareto-fronts population criteria)))
