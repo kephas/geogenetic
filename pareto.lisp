@@ -4,12 +4,8 @@
   (labels ((better-on-all-criteria? (comparee compared-to)
 	     (if (eq comparee compared-to)
 		 nil
-		 (named-let rec ((remaining-criteria criteria))
-		   (if (null remaining-criteria)
-		       t
-		       (if (funcall (first remaining-criteria) comparee compared-to)
-			   (rec (rest remaining-criteria))
-			   nil))))))
+		 (let ((args (list comparee compared-to)))
+		   (every (lambda (criterion) (apply criterion args)) criteria)))))
     (named-let make-fronts ((unscored-individuals population)
 			    (remaining-population population)
 			    (inidividuals-for-next-fronts '())
