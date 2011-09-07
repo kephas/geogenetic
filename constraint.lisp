@@ -10,8 +10,8 @@ ARGS is a list of the form ((name1 type1) (name2 type2) ... (nameN typeN))"
 				  (lambda (entities)
 				    (destructuring-bind ,(mapcar #'first args) entities
 				      (lambda (sys1 sys2)
-					(labels ((entity (name)
-						   (get-entity ,sys-var name))
-						 (score (,sys-var)
-						   ,@body))
+					(labels ((score (,sys-var)
+						   (labels ((entity (name)
+							      (get-entity ,sys-var name)))
+						     ,@body)))
 					  (funcall ,predicate (score sys1) (score sys2))))))))))
