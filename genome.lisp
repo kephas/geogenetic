@@ -57,8 +57,9 @@
 	    (list (entity-type (get-entity system name)) name))
 	  names))
 
-(defun phenotype->gcs (universe reference-system phenotype)
-  (let ((system (clone reference-system)))
+(defun phenotype->gcs (reference-system phenotype)
+  (let ((universe (gcs-universe reference-system))
+	(system (clone reference-system)))
     (named-let rec ((phenotype phenotype)
 		    (types (typed-names system (gcs-unknowns-sequence system))))
       (if types
@@ -80,6 +81,9 @@
   (reduce #'+ (mapcar (lambda (type)
 			(phenotype-size (gcs-universe system) type))
 		      (mapcar #'first (typed-names system (gcs-unknowns-sequence system))))))
+
+(defun gcs-genome-length (size system)
+  (* size (gcs-phenotype-length system)))
 
 (defun genotype->phenotype (size system genotype)
   (named-let rec ((genotype genotype)
