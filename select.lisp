@@ -53,4 +53,4 @@
 
 (defun make-stochastic-pareto-selection (criteria)
   (lambda (population)
-    (mate (shuffle (stochastic-universal-sampling population (make-pareto-score (pareto-fronts population criteria)))
+    (mate (shuffle (stochastic-universal-sampling population (make-pareto-score (pareto-fronts population criteria)))))))
